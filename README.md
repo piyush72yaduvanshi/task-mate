@@ -28,7 +28,5 @@ Task Mate is a full-featured, mobile-responsive to-do list application built wit
 - Express.js
 - MongoDB + Mongoose
 
----
 
-## 📁 Project Structure
 
