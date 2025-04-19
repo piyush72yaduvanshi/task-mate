@@ -1,4 +1,5 @@
-const Task = require('../models/Task');
+// controllers/taskController.js
+const Task = require('../models/Task.js');
 
 // Create Task
 exports.createTask = async (req, res) => {
@@ -10,29 +11,26 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// Get All Tasks (with search, filter, sort)
+// Get All Tasks
 exports.getTasks = async (req, res) => {
   const { search, category, sort } = req.query;
   let query = {};
 
-  // Search by title or description (case-insensitive)
   if (search) {
     query.$or = [
       { title: { $regex: search, $options: 'i' } },
-      { description: { $regex: search, $options: 'i' } }
+      { description: { $regex: search, $options: 'i' } },
     ];
   }
 
-  // Filter by category
   if (category) {
     query.category = category;
   }
 
-  // Sort options
   let sortOptions = {};
-  if (sort === 'dueDate') sortOptions.dueDate = 1;             // ascending
-  else if (sort === 'createdAt') sortOptions.createdAt = -1;   // newest first
-  else if (sort === 'status') sortOptions.isCompleted = 1;     // incomplete first
+  if (sort === 'dueDate') sortOptions.dueDate = 1;
+  else if (sort === 'createdAt') sortOptions.createdAt = -1;
+  else if (sort === 'status') sortOptions.isCompleted = 1;
 
   try {
     const tasks = await Task.find(query).sort(sortOptions);

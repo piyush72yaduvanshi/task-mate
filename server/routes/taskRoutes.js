@@ -1,11 +1,20 @@
+// routes/taskRoutes.js
 const express = require('express');
 const router = express.Router();
-const taskController = require('../controllers/taskController');
+const {
+  createTask,
+  getTasks,
+  updateTask,
+  deleteTask,
+  toggleCompleted,
+} = require('../controllers/taskController');
+const authMiddleware = require('../middleware/auth');
 
-router.post('/', taskController.createTask);
-router.get('/', taskController.getTasks);
-router.put('/:id', taskController.updateTask);
-router.delete('/:id', taskController.deleteTask);
-router.patch('/:id/toggle', taskController.toggleCompleted);
+// Protect routes with auth middleware
+router.post('/tasks', authMiddleware, createTask);
+router.get('/tasks', authMiddleware, getTasks);
+router.put('/tasks/:id', authMiddleware, updateTask);
+router.delete('/tasks/:id', authMiddleware, deleteTask);
+router.patch('/tasks/:id/toggle-completed', authMiddleware, toggleCompleted);
 
 module.exports = router;
